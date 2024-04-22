@@ -18,7 +18,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <div id="app">
         <nav class="bg-gray-800 toolbar">
             <div class="mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,8 +29,11 @@
                         </a>
                     </div>
                     <div class="flex items-center">
-                        <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        <a href="{{ route('login') }}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fa-regular fa-user"></i> Login
+                        </a>
                     </div>
+                </div>
                 </div>
         </nav>
 
