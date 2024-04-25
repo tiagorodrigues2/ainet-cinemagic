@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CostumersController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -10,4 +11,5 @@ Route::post('/login', [LoginController::class,'login'])->name('login.submit');
 Route::get('/register', [LoginController::class,'register'])->name('register');
 Route::post('/register', [LoginController::class,'registerUser'])->name('register.submit');
 Route::post('/logout', [LoginController::class,'logout'])->name('logout');
+Route::get('/costumers', [CostumersController::class, 'index'])->name('costumers');
 

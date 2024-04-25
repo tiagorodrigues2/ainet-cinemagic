@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->type === 'E';
     }
+
+    public function isCostumer(): bool
+    {
+        return $this->type === 'C';
+    }
 }
