@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->type === 'A';
     }
+
+    public function isManager(): bool
+    {
+        return $this->type === 'E';
+    }
 }

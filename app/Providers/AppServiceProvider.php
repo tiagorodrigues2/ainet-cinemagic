@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -20,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (\Auth::viaRemember()) {
+            if (\Auth::user()->blocked == true) {
+                \Auth::logout();
+            }
             \Auth::user()->refreshRememberToken();
         }
     }

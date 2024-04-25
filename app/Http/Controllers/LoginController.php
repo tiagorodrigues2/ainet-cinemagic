@@ -29,6 +29,13 @@ class LoginController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            if (Auth::user()->blocked == true) {
+                Auth::logout();
+                return back()->withErrors([
+                    'login' => 'Vai dar uma volta ao bilhar grande, pá!',
+                ]);
+            }
+
             $request->session()->regenerate();
             return redirect()->intended('/');
         }

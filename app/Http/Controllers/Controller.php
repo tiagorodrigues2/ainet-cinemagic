@@ -10,7 +10,7 @@ class Controller extends \Illuminate\Routing\Controller
 {
     public function index(): View
     {
-        $movies = Movie::all();
+        $movies = Movie::GetPostersInShow();
         return view('home')->with('movies', $movies);
     }
 }
