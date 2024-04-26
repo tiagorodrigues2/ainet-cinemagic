@@ -70,6 +70,13 @@ class LoginController extends Controller
             'password_confirmation.same' => 'The password confirmation does not match the password.',
         ]);
 
+        $jaExiste = User::where('email', $request->email)->first();
+        if ($jaExiste) {
+            return back()->withErrors([
+                'register' => 'Email already registered.',
+            ])->withInput();
+        }
+
         try {
             $user = User::create([
                 'type' => 'C',
