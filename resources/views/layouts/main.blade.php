@@ -20,7 +20,7 @@
 
 <body class="bg-gray-100">
     <div id="app">
-        <nav class="bg-gray-800 toolbar">
+        <nav class="toolbar fixed top-0 left-0 right-0">
             <div class="mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-around h-16">
                     <div class="flex items-center">
@@ -71,7 +71,7 @@
                 </div>
         </nav>
 
-        <main>
+        <main class="mt-24">
             @yield('content')
         </main>
     </div>
