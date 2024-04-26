@@ -2,23 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
+
 
 class CostumersController extends Controller
 {
     public function index(): View
     {
-        if (!auth()->check()) {
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
             return view('errors.403');
+        }
+
+        $sucesso = Session::get('success');
+        $erro = Session::get('error');
+
+        if (isset($sucesso)) {
+            Session::forget('success');
+        }
+
+        if (isset($erro)) {
+            Session::forget('error');
         }
 
         $search = $_GET['search'] ?? null;
-
-        if (!auth()->user()->isAdmin()) {
-            return view('errors.403');
-        }
 
         $costumers = User::where('type', 'C')
                 ->when($search, function ($query) use ($search) {
@@ -26,6 +36,45 @@ class CostumersController extends Controller
                 })
                 ->get();
 
-        return view('costumers.costumer-list')->with('costumers', $costumers)->with('search', $search);
+        return view('costumers.costumer-list')->with('costumers', $costumers)->with('search', $search)->with('sucesso', $sucesso)->with('erro', $erro);
+    }
+
+    public function delete(int $id): RedirectResponse {
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            return redirect()->route('login');
+        }
+
+        $costumer = User::find($id);
+
+        if (!$costumer) {
+            return redirect()->route('costumers')->with('error', 'Costumer not found!');
+        }
+
+        $costumer->delete();
+
+        return redirect()->route('costumers')->with('success', 'Costumer' . $costumer->name . ' deleted successfully!');
+    }
+
+    public function toggleBlock(Request $request): RedirectResponse {
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            return redirect()->route('login');
+        }
+
+        $id = $request->all()['id'];
+
+        if (!isset($id) || !is_numeric($id) || $id <= 0) {
+            return redirect()->route('costumers')->with('error', 'Costumer not found!');
+        }
+
+        $costumer = User::find($id);
+
+        if (!$costumer) {
+            return redirect()->route('costumers')->with('error', 'Costumer not found!');
+        }
+
+        $costumer->blocked = !$costumer->blocked;
+        $costumer->save();
+
+        return redirect()->route('costumers')->with('success', 'Costumer ' . $costumer->name . ($costumer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
     }
 }
