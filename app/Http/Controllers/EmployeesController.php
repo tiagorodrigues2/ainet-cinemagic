@@ -14,7 +14,7 @@ class EmployeesController extends Controller
     public function index(): \Illuminate\View\View
     {
         if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return view('errors.403');
+            abort(403, 'Unauthorized action.');
         }
 
         $sucesso = Session::get('success');

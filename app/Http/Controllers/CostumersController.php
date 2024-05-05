@@ -14,7 +14,7 @@ class CostumersController extends Controller
     public function index(): View
     {
         if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return view('errors.403');
+            abort(403, 'Unauthorized action.');
         }
 
         $sucesso = Session::get('success');
