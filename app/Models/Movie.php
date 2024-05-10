@@ -24,7 +24,7 @@ class Movie extends Model
 
     public static function GetPostersInShow()
     {
-        $posters = Movie::query()
+        $query = Movie::query()
             ->join('genres', 'movies.genre_code', '=', 'genres.code')
             ->select('movies.id', 'movies.title', 'genres.name as genre', 'movies.poster_filename')
             ->whereIn('movies.id', function ($query) {
@@ -33,8 +33,9 @@ class Movie extends Model
                     ->where('date', '>=', DB::raw('CURDATE()'))
                     ->where('date', '<=', DB::raw('CURDATE() + INTERVAL 14 DAY'));
             })
-            ->orderBy('movies.title')
-            ->get();
+            ->orderBy('movies.title');
+
+        $posters = $query->get();
 
         return $posters;
     }
