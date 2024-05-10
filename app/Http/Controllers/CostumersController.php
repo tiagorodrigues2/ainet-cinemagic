@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 
 class CostumersController extends Controller
 {
     public function index(): View
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
+        if (!(Auth::check() && Auth::user()->isAdmin())) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -40,8 +41,9 @@ class CostumersController extends Controller
     }
 
     public function delete(int $id): RedirectResponse {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return redirect()->route('login');
+
+        if (!(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403, 'Unauthorized action.');
         }
 
         $costumer = User::find($id);
@@ -56,8 +58,8 @@ class CostumersController extends Controller
     }
 
     public function toggleBlock(Request $request): RedirectResponse {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return redirect()->route('login');
+        if (!(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403, 'Unauthorized action.');
         }
 
         $id = $request->all()['id'];

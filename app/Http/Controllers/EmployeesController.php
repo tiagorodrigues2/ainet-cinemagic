@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 
 class EmployeesController extends Controller
@@ -13,7 +14,7 @@ class EmployeesController extends Controller
 
     public function index(): \Illuminate\View\View
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
+        if (!(Auth::check() && Auth::user()->isAdmin())) {
             abort(403, 'Unauthorized action.');
         }
 
