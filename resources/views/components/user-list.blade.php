@@ -22,7 +22,14 @@
                     </td>
                 @endif
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
-                    <div class="text-sm leading-5 font-medium text-gray-900">{{ $user->name }}</div>
+                    <div class="flex justify-between">
+                        <span class="text-sm leading-5 font-medium text-gray-900">{{ $user->name }}</span>
+                        @if ($user->type == 'A')
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                Admin
+                            </span>
+                        @endif
+                    </div>
                 </td>
                 @if($type == 'costumers')
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">

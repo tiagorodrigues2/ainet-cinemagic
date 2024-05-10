@@ -82,7 +82,7 @@ class LoginController extends Controller
                 'type' => 'C',
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => bcrypt($request->password)
             ]);
 
             Auth::login($user, true);

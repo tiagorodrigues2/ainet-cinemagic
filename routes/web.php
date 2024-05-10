@@ -15,5 +15,7 @@ Route::post('/logout', [LoginController::class,'logout'])->name('logout');
 Route::get('/costumers', [CostumersController::class, 'index'])->name('costumers');
 Route::delete('/costumers/{id}', [CostumersController::class, 'delete'])->name('costumers.delete');
 Route::post('/costumers/toggle-block', [CostumersController::class, 'toggleBlock'])->name('costumers.toggle-block');
-Route::get('/employees', [EmployeesController::class, 'index'])->name('employees');
 
+Route::get('/employees', [EmployeesController::class, 'index'])->name('employees');
+Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.register');
+Route::post('/employees/create', [EmployeesController::class, 'register'])->name('employees.register.submit');

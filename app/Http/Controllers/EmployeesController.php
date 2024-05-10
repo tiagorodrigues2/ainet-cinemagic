@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 
 class EmployeesController extends Controller
 {
     //
 
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         if (!(Auth::check() && Auth::user()->isAdmin())) {
             abort(403, 'Unauthorized action.');
@@ -31,12 +33,85 @@ class EmployeesController extends Controller
 
         $search = $_GET['search'] ?? null;
 
-        $employees = User::where('type', 'E')
-                ->when($search, function ($query) use ($search) {
-                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                })
-                ->get();
+        $employees = User::whereIn('type', ['E', 'A'])
+            ->when($search, function ($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            })
+            ->orderBy('type')
+            ->orderBy('name')
+            ->get();
 
         return view('employees.employees-list')->with('employees', $employees)->with('search', $search)->with('sucesso', $sucesso)->with('erro', $erro);
+    }
+
+    public function create(): View {
+        if (!(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('employees.employees-create');
+    }
+
+
+    public function register(Request $request): View | RedirectResponse {
+        if (!(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'type' => 'required|in:A,E'
+        ], [
+            'name.required' => 'Name is required',
+            'email.required' => 'Email is required',
+            'email.email' => 'Email is invalid',
+            'password.required' => 'Password is required',
+            'type.required' => 'Type is required',
+            'type.in' => 'Type is invalid'
+        ]);
+        try {
+
+            $jaExiste = User::where('email', $request->email)->first();
+            if ($jaExiste) {
+                return back()->withErrors([
+                    'register' => 'Email already registered.',
+                ])->withInput();
+            }
+
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->type = $request->type;
+            $user->photo_filename = null;
+
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $photoName = uniqid() . '.' . $photo->getClientOriginalExtension();
+                $photoPath = $photo->storeAs('photos', $photoName, 'public');
+                $user->photo_filename = str_replace('photos/', '', $photoPath);
+            }
+
+
+            User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $user->password,
+                'type' => $request->type,
+                'photo_filename' => $user->photo_filename
+            ]);
+
+            Session::flash('success', 'Employee registered successfully!');
+
+            return redirect()->route('employees');
+        }
+        catch (\Exception $e) {
+            return back()->withErrors([
+                'register' => $e->getMessage(),
+            ])->withInput();
+        }
+
     }
 }

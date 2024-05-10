@@ -16,6 +16,8 @@
             padding: 10px;
         }
     </style>
+
+    @yield('head')
 </head>
 
 <body class="bg-gray-100">
