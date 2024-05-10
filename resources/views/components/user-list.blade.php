@@ -24,11 +24,13 @@
                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
                     <div class="flex justify-between">
                         <span class="text-sm leading-5 font-medium text-gray-900">{{ $user->name }}</span>
-                        @if ($user->type == 'A')
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                Admin
-                            </span>
-                        @endif
+                        <div class="flexitems-center justify-center">
+                            @if ($user->type == 'A')
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 mr-2">
+                                    Admin
+                                </span>
+                            @endif
+                        </div>
                     </div>
                 </td>
                 @if($type == 'costumers')
@@ -51,7 +53,15 @@
                     </td>
                 @elseif ($type == 'employees')
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
-                        <a><button class="px-4 py-2 text-black rounded-md hover:bg-blue-300 ring-1 ring-blue-500" type="submit">Manage</button></a>
+                        <div class="flex justify-between items-center">
+                            <a href="{{ route('employees.show', ['id' => $user->id]) }}"><button class="px-4 py-2 text-black rounded-md hover:bg-blue-300 ring-1 ring-blue-500" type="submit">Manage</button></a>
+                            @if ($user->blocked == true)
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Blocked
+                                </span>
+                            @endif
+                        </div>
+
                     </td>
                 @endif
             </tr>

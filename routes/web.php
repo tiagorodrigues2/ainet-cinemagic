@@ -19,3 +19,5 @@ Route::post('/costumers/toggle-block', [CostumersController::class, 'toggleBlock
 Route::get('/employees', [EmployeesController::class, 'index'])->name('employees');
 Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.register');
 Route::post('/employees/create', [EmployeesController::class, 'register'])->name('employees.register.submit');
+Route::get('/employees/{id}', [EmployeesController::class, 'show'])->name('employees.show');
+Route::post('/employees/save', [EmployeesController::class, 'save'])->name('employees.save');

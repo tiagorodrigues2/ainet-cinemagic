@@ -14,7 +14,7 @@ class CostumersController extends Controller
 {
     public function index(): View
     {
-        if (!(Auth::check() && Auth::user()->isAdmin())) {
+        if (!(Auth::check() && Auth::user()->isAdmin() && !Auth::user()->blocked)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -42,7 +42,7 @@ class CostumersController extends Controller
 
     public function delete(int $id): RedirectResponse {
 
-        if (!(Auth::check() && Auth::user()->isAdmin())) {
+        if (!(Auth::check() && Auth::user()->isAdmin() && !Auth::user()->blocked)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -54,11 +54,15 @@ class CostumersController extends Controller
 
         $costumer->delete();
 
-        return redirect()->route('costumers')->with('success', 'Costumer' . $costumer->name . ' deleted successfully!');
+        Session::flash('success', 'Costumer ' . $costumer->name . ' deleted successfully!');
+
+        return redirect()->back()->with('success', 'Costumer' . $costumer->name . ' deleted successfully!');
+
     }
 
     public function toggleBlock(Request $request): RedirectResponse {
-        if (!(Auth::check() && Auth::user()->isAdmin())) {
+
+        if (!(Auth::check() && Auth::user()->isAdmin() && !Auth::user()->blocked)) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -77,6 +81,8 @@ class CostumersController extends Controller
         $costumer->blocked = !$costumer->blocked;
         $costumer->save();
 
-        return redirect()->route('costumers')->with('success', 'Costumer ' . $costumer->name . ($costumer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
+        Session::flash('success', 'Costumer ' . $costumer->name . ($costumer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
+
+        return redirect()->back()->with('success', 'Costumer ' . $costumer->name . ($costumer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
     }
 }
