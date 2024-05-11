@@ -38,6 +38,7 @@ class EmployeesController extends Controller
                 $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
             })
             ->orderBy('type')
+            ->orderBy('blocked', 'asc')
             ->orderBy('name')
             ->get();
 
@@ -72,7 +73,9 @@ class EmployeesController extends Controller
         $sucesso = Session::get('success');
         $erro = Session::get('error');
 
-        return view('employees.employees-show')->with('employee', $employee)->with('sucesso', $sucesso)->with('erro', $erro);
+        $isAtual = Auth::user()->id == $id;
+
+        return view('employees.employees-show')->with('employee', $employee)->with('sucesso', $sucesso)->with('erro', $erro)->with('isAtual', $isAtual);
     }
 
 
@@ -156,6 +159,10 @@ class EmployeesController extends Controller
             'type.required' => 'Type is required',
             'type.in' => 'Type is invalid'
         ]);
+
+        if (Auth::user()->id == $request->id) {
+            abort(400);
+        }
 
         try {
             $user = User::find($request->id);
