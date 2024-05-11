@@ -46,6 +46,10 @@ class CostumersController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        if (Auth::user()->id == $id) {
+            abort(400);
+        }
+
         $costumer = User::find($id);
 
         if (!$costumer) {
@@ -70,6 +74,10 @@ class CostumersController extends Controller
 
         if (!isset($id) || !is_numeric($id) || $id <= 0) {
             return redirect()->route('costumers')->with('error', 'Costumer not found!');
+        }
+
+        if (Auth::user()->id == $id) {
+            abort(400);
         }
 
         $costumer = User::find($id);
