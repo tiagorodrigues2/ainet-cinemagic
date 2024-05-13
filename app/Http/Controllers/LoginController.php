@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -93,5 +94,77 @@ class LoginController extends Controller
             'register' => 'An error occurred while registering. Please try again.',
             ])->withInput();
         }
+    }
+
+    public function profile(): View {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = Auth::user();
+
+        $success = Session::get('success');
+        $error = Session::get('error');
+
+        return view('auth.profile')->with('user', $user)->with('success', $success)->with('error', $error);
+    }
+
+    public function savePhoto(Request $request): RedirectResponse {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('photo')) {
+            try {
+                $photo = $request->file('photo');
+                $photoName = uniqid() . '.' . $photo->getClientOriginalExtension();
+                $photoPath = $photo->storeAs('photos', $photoName, 'public');
+                $user->photo_filename = str_replace('photos/', '', $photoPath);
+                $user->save();
+
+                Session::flash('success', 'Photo saved successfully!');
+
+                return redirect()->route('profile');
+            } catch (\Exception $e) {
+                Session::flash('error', $e->getMessage());
+                return redirect()->route('profile');
+            }
+        }
+
+        Session::flash('error', 'Please select a photo.');
+        return redirect()->route('profile');
+    }
+
+    public function savePassword(Request $request): RedirectResponse {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        $user = Auth::user();
+
+        if (!password_verify($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'password' => 'Current password is incorrect.',
+            ]);
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        Session::flash('success', 'Password saved successfully!');
+
+        return redirect()->route('profile');
     }
 }

@@ -7,11 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeesController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
+
 Route::get('/login', [LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class,'login'])->name('login.submit');
 Route::get('/register', [LoginController::class,'register'])->name('register');
 Route::post('/register', [LoginController::class,'registerUser'])->name('register.submit');
 Route::post('/logout', [LoginController::class,'logout'])->name('logout');
+Route::get('/profile', [LoginController::class, 'profile'])->name('profile');
+Route::patch('/profile/photo', [LoginController::class, 'savePhoto'])->name('profile.photo.update');
+Route::put('/profile/password', [LoginController::class, 'savePassword'])->name('profile.password.update');
+
 Route::get('/costumers', [CostumersController::class, 'index'])->name('costumers');
 Route::delete('/costumers/{id}', [CostumersController::class, 'delete'])->name('costumers.delete');
 Route::post('/costumers/toggle-block', [CostumersController::class, 'toggleBlock'])->name('costumers.toggle-block');
