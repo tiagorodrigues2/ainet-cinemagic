@@ -26,8 +26,12 @@
             <div class="mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-around h-16">
                     <div class="flex items-center">
-                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center text-lg">
+                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center" style="font-size: 27px">
                             CineMagic
+                        </a>
+
+                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center ms-16">
+                            All Movies
                         </a>
                     </div>
                     <div class="flex items-center">

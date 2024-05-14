@@ -39,4 +39,14 @@ class Movie extends Model
 
         return $posters;
     }
+
+    public static function GetMovieWithGenre(int $id) {
+        $query = Movie::query()
+            ->join('genres', 'movies.genre_code', '=', 'genres.code')
+            ->select('movies.id', 'movies.title', 'genres.name as genre', 'movies.poster_filename', 'movies.synopsis', 'movies.trailer_url', 'movies.poster_filename')
+            ->where('movies.id', $id);
+
+        $result = $query->get()->first();
+        return $result;
+    }
 }

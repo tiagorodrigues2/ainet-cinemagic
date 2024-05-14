@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\CostumersController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MoviesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeesController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
+Route::get('/movie/{id}', [MoviesController::class, 'movie'])->name('movie');
 
 Route::get('/login', [LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class,'login'])->name('login.submit');
