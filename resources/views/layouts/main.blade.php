@@ -30,7 +30,7 @@
                             CineMagic
                         </a>
 
-                        <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center ms-16">
+                        <a href="{{ route('movies', ['page' => 1]) }}" class="flex-shrink-0 flex items-center ms-16">
                             All Movies
                         </a>
                     </div>

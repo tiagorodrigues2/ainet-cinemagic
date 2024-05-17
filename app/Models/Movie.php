@@ -49,4 +49,43 @@ class Movie extends Model
         $result = $query->get()->first();
         return $result;
     }
+
+    public static function GetMoviesWithGenre(int $page, int $itemsPerPage) {
+        $query = Movie::query()
+            ->join('genres', 'movies.genre_code', '=', 'genres.code')
+            ->select('movies.id', 'movies.title', 'genres.name as genre', 'movies.poster_filename')
+            ->orderBy('movies.title')
+            ->offset(($page - 1) * $itemsPerPage)
+            ->limit($itemsPerPage);
+
+        $result = $query->get();
+        return $result;
+    }
+
+    public static function GetMoviesWithGenresBySearch(string $search, int $page, int $itemsPerPage) {
+        $query = Movie::query()
+            ->join('genres', 'movies.genre_code', '=', 'genres.code')
+            ->select('movies.id', 'movies.title', 'genres.name as genre', 'movies.poster_filename')
+            ->whereRaw("LOWER(movies.title) LIKE '%" . strtolower($search) . "%'")
+            ->orderBy('movies.title')
+            ->offset(($page - 1) * $itemsPerPage)
+            ->limit($itemsPerPage);
+
+        $result = $query->get();
+        return $result;
+    }
+
+    public static function GetMoviesWithGenresBySearchWithSynopsis(string $search, int $page, int $itemsPerPage) {
+        $query = Movie::query()
+            ->join('genres', 'movies.genre_code', '=', 'genres.code')
+            ->select('movies.id', 'movies.title', 'genres.name as genre', 'movies.poster_filename')
+            ->whereRaw("LOWER(movies.title) LIKE '%".strtolower($search)."%'")
+            ->orWhereRaw("lower(movies.synopsis) LIKE '%".strtolower($search)."%'")
+            ->orderBy('movies.title')
+            ->offset(($page - 1) * $itemsPerPage)
+            ->limit($itemsPerPage);
+
+        $result = $query->get();
+        return $result;
+    }
 }

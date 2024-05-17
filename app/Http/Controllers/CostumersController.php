@@ -21,14 +21,6 @@ class CostumersController extends Controller
         $sucesso = Session::get('success');
         $erro = Session::get('error');
 
-        if (isset($sucesso)) {
-            Session::forget('success');
-        }
-
-        if (isset($erro)) {
-            Session::forget('error');
-        }
-
         $search = $_GET['search'] ?? null;
 
         $costumers = User::where('type', 'C')

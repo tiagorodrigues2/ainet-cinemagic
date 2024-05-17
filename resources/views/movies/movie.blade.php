@@ -20,32 +20,37 @@
         @endif
     </div>
 
-    <div>
-        <table class="mt-8">
-            <thead>
-                <tr class="bg-slate-200">
-                    <th class="px-4 py-2">Theater</th>
-                    <th class="px-4 py-2">Date</th>
-                    <th class="px-4 py-2">Time</th>
-                    <th class="px-4 py-2">Price</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($nextScreenings as $screening)
-                    <tr class="odd:bg-slate-50">
-                        <td class="border px-4 py-2">{{ $screening->theater }}</td>
-                        <td class="border px-4 py-2">{{ $screening->date }}</td>
-                        <td class="border px-4 py-2">{{ $screening->start_time }}</td>
-                        <td class="border px-4 py-4">
-                            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Buy Ticket
-                            </a>
-                        </td>
+    @if (count($nextScreenings) == 0)
+        <p class="text-red-500 mt-4">No screenings available</p>
+    @else
+        <div>
+            <p class="font-bold">Next Screenings</p>
+            <table class="mt-4">
+                <thead>
+                    <tr class="bg-slate-200">
+                        <th class="px-4 py-2">Theater</th>
+                        <th class="px-4 py-2">Date</th>
+                        <th class="px-4 py-2">Time</th>
+                        <th class="px-4 py-2">Price</th>
+                        <th></th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach($nextScreenings as $screening)
+                        <tr class="odd:bg-slate-50">
+                            <td class="border px-4 py-2">{{ $screening->theater }}</td>
+                            <td class="border px-4 py-2">{{ $screening->date }}</td>
+                            <td class="border px-4 py-2">{{ $screening->start_time }}</td>
+                            <td class="border px-4 py-4">
+                                <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Buy Ticket
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 </div>
 @endsection

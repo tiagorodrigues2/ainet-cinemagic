@@ -9,6 +9,7 @@ use App\Http\Controllers\EmployeesController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
 Route::get('/movie/{id}', [MoviesController::class, 'movie'])->name('movie');
+Route::get('/movies', [MoviesController::class, 'movies'])->name('movies');
 
 Route::get('/login', [LoginController::class,'index'])->name('login');
 Route::post('/login', [LoginController::class,'login'])->name('login.submit');
