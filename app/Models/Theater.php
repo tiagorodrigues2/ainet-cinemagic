@@ -10,4 +10,14 @@ class Theater extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function screenings()
+    {
+        return $this->hasMany(Screening::class, 'theater_id', 'id');
+    }
+
+    public function seats()
+    {
+        return $this->hasMany(Seat::class, 'theater_id', 'id');
+    }
 }

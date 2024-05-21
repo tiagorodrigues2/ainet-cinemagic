@@ -10,6 +10,16 @@ class Screening extends Model
 {
     use HasFactory;
 
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'screening_id', 'id');
+    }
+
+    public function theaters()
+    {
+        return $this->belongsTo(Theater::class, 'theater_id', 'id');
+    }
+
     public static function GetNextScreeningsByMovieID(int $movie_id) {
         $result = self::where('movie_id', $movie_id)
             ->join('theaters', 'screenings.theater_id', '=', 'theaters.id')

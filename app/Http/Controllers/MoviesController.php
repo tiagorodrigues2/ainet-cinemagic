@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Configuration;
 use App\Models\Screening;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,6 +17,7 @@ class MoviesController extends Controller {
     public function movie(int $id): View {
 
         $movie = Movie::GetMovieWithGenre($id);
+        $config = Configuration::find(1);
 
         if ($movie == null) {
             abort(404);
@@ -30,7 +32,13 @@ class MoviesController extends Controller {
         }
 
         $nextScreenings = Screening::GetNextScreeningsByMovieID($movie->id);
-        return view('movies.movie')->with('movie', $movie)->with('nextScreenings', $nextScreenings);
+        $ticketPrice = $config->ticket_price;
+
+        if (Auth::check()) {
+            $ticketPrice -= $config->registered_costumer_ticket_discount;
+        }
+
+        return view('movies.movie')->with('movie', $movie)->with('nextScreenings', $nextScreenings)->with('ticketPrice', $ticketPrice);
     }
 
     public function movies(): View | RedirectResponse {

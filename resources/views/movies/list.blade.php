@@ -94,9 +94,9 @@
         <table class="min-w-full bg-white border border-gray-300">
             <thead>
                 <tr>
-                    <th class="px-4 py-2 border-b">Poster</th>
-                    <th class="px-4 py-2 border-b">Title</th>
-                    <th class="px-4 py-2 border-b">Genre</th>
+                    <th class="px-4 py-2 border-b text-start">Poster</th>
+                    <th class="px-4 py-2 border-b text-start">Title</th>
+                    <th class="px-4 py-2 border-b text-start">Genre</th>
                     <th></th>
                 </tr>
             </thead>

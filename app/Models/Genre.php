@@ -10,4 +10,9 @@ class Genre extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function movies()
+    {
+        return $this->hasMany(Movie::class, 'genre_code', 'code');
+    }
 }

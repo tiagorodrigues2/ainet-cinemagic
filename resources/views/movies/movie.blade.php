@@ -41,8 +41,9 @@
                             <td class="border px-4 py-2">{{ $screening->theater }}</td>
                             <td class="border px-4 py-2">{{ $screening->date }}</td>
                             <td class="border px-4 py-2">{{ $screening->start_time }}</td>
+                            <td class="border px-4 py-2 text-green-700" style="text-align: right; font-size: 16px; font-weight: 700">{{ $ticketPrice }} €</td>
                             <td class="border px-4 py-4">
-                                <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                <a href="#" class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                     Buy Ticket
                                 </a>
                             </td>

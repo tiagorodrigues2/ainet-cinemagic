@@ -48,6 +48,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function costumer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'id');
+    }
+
     public function isAdmin(): bool
     {
         return $this->type === 'A';
