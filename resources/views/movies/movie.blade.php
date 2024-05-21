@@ -38,7 +38,7 @@
                 <tbody>
                     @foreach($nextScreenings as $screening)
                         <tr class="odd:bg-slate-50">
-                            <td class="border px-4 py-2">{{ $screening->theater }}</td>
+                            <td class="border px-4 py-2">{{ $screening->theater()->get()->first()->name }}</td>
                             <td class="border px-4 py-2">{{ $screening->date }}</td>
                             <td class="border px-4 py-2">{{ $screening->start_time }}</td>
                             <td class="border px-4 py-2 text-green-700" style="text-align: right; font-size: 16px; font-weight: 700">{{ $ticketPrice }} €</td>

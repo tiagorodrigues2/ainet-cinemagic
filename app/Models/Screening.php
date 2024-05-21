@@ -15,7 +15,7 @@ class Screening extends Model
         return $this->hasMany(Ticket::class, 'screening_id', 'id');
     }
 
-    public function theaters()
+    public function theater()
     {
         return $this->belongsTo(Theater::class, 'theater_id', 'id');
     }

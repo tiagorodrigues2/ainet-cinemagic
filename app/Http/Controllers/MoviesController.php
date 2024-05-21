@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use App\Models\Movie;
+use Illuminate\Support\Facades\DB;
 
 class MoviesController extends Controller {
 
@@ -31,7 +32,7 @@ class MoviesController extends Controller {
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
 
-        $nextScreenings = Screening::GetNextScreeningsByMovieID($movie->id);
+        $nextScreenings = $movie->screenings()->where('date', '<=', DB::raw('CURDATE() + INTERVAL 14 DAY'))->where('date', '>=', DB::raw('CURDATE()'))->orderBy('date', 'asc')->get();
         $ticketPrice = $config->ticket_price;
 
         if (Auth::check()) {
