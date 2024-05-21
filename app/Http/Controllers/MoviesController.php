@@ -36,7 +36,7 @@ class MoviesController extends Controller {
         $ticketPrice = $config->ticket_price;
 
         if (Auth::check()) {
-            $ticketPrice -= $config->registered_costumer_ticket_discount;
+           $ticketPrice -= $config->registered_customer_ticket_discount;
         }
 
         return view('movies.movie')->with('movie', $movie)->with('nextScreenings', $nextScreenings)->with('ticketPrice', $ticketPrice);
