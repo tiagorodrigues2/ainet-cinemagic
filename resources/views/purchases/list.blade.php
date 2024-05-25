@@ -12,7 +12,6 @@
             <thead>
                 <tr>
                     <th class="px-4 py-2 border-b text-start">Payment List</th>
-                    <th class="px-4 py-2 border-b text-start"></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,11 +20,10 @@
                         $tickets = $p->tickets()->get();
                     @endphp
                     <tr class="bg-amber-100">
-                        <td class="px-4 py-2 border-b flex-col">
+                        <td class="px-4 py-2 border-b flex-col" colspan="2">
                             <div>Payment Method: <span class="font-semibold">{{ $p->payment_type }}</span></div>
                             <div>Ref: <span class="font-semibold">{{ $p->payment_ref }}</span></div>
                         </td>
-                        <td class="px-4 py-2 border-b text-end text-green-800 font-bold">{{ $p->total_price }} €</td>
                     </tr>
 
                     @foreach ($tickets as $t)
@@ -48,6 +46,14 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    @if (count($tickets) > 0)
+                        <tr>
+                            <td class="py-2 border-b text-end px-16">
+                                <span>Total:</span> <span class="text-green-800 font-bold">{{ $p->total_price }} €</span>
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
