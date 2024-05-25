@@ -22,7 +22,7 @@
                     <tr class="bg-amber-100">
                         <td class="px-4 py-2 border-b flex-col" colspan="2">
                             <div>Payment Method: <span class="font-semibold">{{ $p->payment_type }}</span></div>
-                            <div>Ref: <span class="font-semibold">{{ $p->payment_ref }}</span></div>
+                            <div class="text-sm">Ref: <span>{{ $p->payment_ref }}</span></div>
                         </td>
                     </tr>
 

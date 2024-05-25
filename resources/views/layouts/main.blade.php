@@ -70,6 +70,13 @@
                                 Sign In
                             </a>
                         @endauth
+
+                        <a href="#" class="font-semibold text-white shadow-sm hover:bg-red-900 px-3 py-2 rounded-md text-sm ms-8">
+                            Cart
+                            @if (session()->has('cart'))
+                                <span class="bg-green-500 text-white rounded-full px-2 py-1 ms-2">{{ count(session('cart')) }}</span>
+                            @endif
+                        </a>
                     </div>
                     </div>
                 </div>
