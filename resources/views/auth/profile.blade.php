@@ -23,6 +23,7 @@
                 <div class="flex justify-between items-center">
                     <img src="{{ asset('storage/photos/' . $user->photo_filename) }}" alt="{{ $user->name }}" class="w-16 h-16 rounded-full mr-4 mb-8">
                     <form action="{{ route('profile.photo.update') }}" method="post" enctype="multipart/form-data">
+                        @method('PATCH')
                         @csrf
                         <div class="mb-8" class="flex-col">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="type">

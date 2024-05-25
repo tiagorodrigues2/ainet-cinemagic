@@ -6,6 +6,7 @@ use App\Http\Controllers\MoviesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\PurchasesController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
 Route::get('/movie/{id}', [MoviesController::class, 'movie'])->name('movie');
@@ -29,3 +30,5 @@ Route::get('/employees/create', [EmployeesController::class, 'create'])->name('e
 Route::post('/employees/create', [EmployeesController::class, 'register'])->name('employees.register.submit');
 Route::get('/employees/{id}', [EmployeesController::class, 'show'])->name('employees.show');
 Route::post('/employees/save', [EmployeesController::class, 'save'])->name('employees.save');
+
+Route::get('/purchases', [PurchasesController::class, 'index'])->name('purchases');

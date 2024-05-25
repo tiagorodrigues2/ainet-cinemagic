@@ -14,7 +14,7 @@ class Customer extends Model
 
     public function purchases(): HasMany
     {
-        return $this->hasMany(Purchase::class, 'costumer_id', 'id');
+        return $this->hasMany(Purchase::class, 'customer_id', 'id');
     }
 
     public function user()
