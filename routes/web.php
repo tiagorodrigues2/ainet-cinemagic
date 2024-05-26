@@ -3,10 +3,12 @@
 use App\Http\Controllers\CostumersController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\ScreeningController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PurchasesController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
 Route::get('/movie/{id}', [MoviesController::class, 'movie'])->name('movie');
@@ -32,3 +34,10 @@ Route::get('/employees/{id}', [EmployeesController::class, 'show'])->name('emplo
 Route::post('/employees/save', [EmployeesController::class, 'save'])->name('employees.save');
 
 Route::get('/purchases', [PurchasesController::class, 'index'])->name('purchases');
+
+Route::get('/screening/{id}', [ScreeningController::class, 'screening'])->name('screening');
+
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::patch('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+Route::delete('/cart/remove/{seat_id}', [CartController::class, 'remove'])->name('cart.remove');

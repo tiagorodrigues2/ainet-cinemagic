@@ -43,7 +43,7 @@
                             <td class="border px-4 py-2">{{ $screening->start_time }}</td>
                             <td class="border px-4 py-2 text-green-700" style="text-align: right; font-size: 16px; font-weight: 700">{{ $ticketPrice }} €</td>
                             <td class="border px-4 py-4">
-                                <a href="#" class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                <a href="{{ route('screening', ['id' => $screening->id]) }}" class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                     Buy Ticket
                                 </a>
                             </td>
