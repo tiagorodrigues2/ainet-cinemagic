@@ -9,6 +9,14 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'screening_id',
+        'seat_id',
+        'purchase_id',
+        'price',
+        'qr_codeurl'
+    ];
+
     public function purchase()
     {
         return $this->belongsTo(Purchase::class, 'purchase_id', 'id');

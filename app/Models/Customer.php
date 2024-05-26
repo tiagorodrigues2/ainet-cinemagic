@@ -12,6 +12,13 @@ class Customer extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'id',
+        'nif',
+        'payment_type',
+        'payment_ref'
+    ];
+
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class, 'customer_id', 'id');

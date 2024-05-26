@@ -1,7 +1,23 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-lg overflow-hidden flex justify-center m-16 p-8">
+
+@if ($errors->any())
+@foreach ($errors->all() as $error)
+    <x-toast type="error" :message="$error" />
+@endforeach
+@endif
+
+@if (session()->has('success'))
+<x-toast type="success" :message="session('success')" />
+@endif
+
+@if (session()->has('error'))
+<x-toast type="error" :message="session('error')" />
+@endif
+
+<div class="bg-white rounded-lg shadow-lg overflow-hidden flex justify-center flex-wrap m-16 p-8">
+
     <div class="flex-col justify-center">
         <div class="flex justify-center">
             <img src="{{ asset('storage/posters/'. $movie->poster_filename) }}" alt="{{ $movie->title }}" style="width: 300px; height: auto">

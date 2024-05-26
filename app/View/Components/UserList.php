@@ -16,8 +16,8 @@ class UserList extends Component
         private $type
     )
     {
-        if ($type != 'costumers' || $type != 'employees') {
-            $type = 'costumers';
+        if ($type != 'customers' || $type != 'employees') {
+            $type = 'customers';
         }
     }
 

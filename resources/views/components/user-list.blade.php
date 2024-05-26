@@ -33,9 +33,9 @@
                         </div>
                     </div>
                 </td>
-                @if($type == 'costumers')
+                @if($type == 'customers')
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
-                        <form action="{{ route('costumers.toggle-block', ['id' => $user->id]) }}" method="post">
+                        <form action="{{ route('customers.toggle-block', ['id' => $user->id]) }}" method="post">
                             @csrf
                             @if ($user->blocked == true)
                                 <button class="px-4 py-2 text-black rounded-md hover:bg-blue-300 ring-1 ring-blue-500" type="submit">Unblock</button>
@@ -45,7 +45,7 @@
                         </form>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
-                        <form action="{{ route('costumers.delete', ['id' => $user->id]) }}" method="post">
+                        <form action="{{ route('customers.delete', ['id' => $user->id]) }}" method="post">
                             @method('DELETE')
                             @csrf
                         <button class="px-4 py-2 text-black rounded-md hover:bg-red-300 ring-1 ring-red-500" type="submit">Delete</button>

@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use App\Models\Customer;
 
 class LoginController extends Controller
 {
@@ -84,6 +85,10 @@ class LoginController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
+            ]);
+
+            $c = Customer::create([
+                'id' => $user->id
             ]);
 
             Auth::login($user, true);

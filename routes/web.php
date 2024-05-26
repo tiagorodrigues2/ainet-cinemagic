@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CostumersController;
+use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\ScreeningController;
@@ -23,9 +23,9 @@ Route::get('/profile', [LoginController::class, 'profile'])->name('profile');
 Route::patch('/profile/photo', [LoginController::class, 'savePhoto'])->name('profile.photo.update');
 Route::put('/profile/password', [LoginController::class, 'savePassword'])->name('profile.password.update');
 
-Route::get('/costumers', [CostumersController::class, 'index'])->name('costumers');
-Route::delete('/costumers/{id}', [CostumersController::class, 'delete'])->name('costumers.delete');
-Route::post('/costumers/toggle-block', [CostumersController::class, 'toggleBlock'])->name('costumers.toggle-block');
+Route::get('/customers', [CustomersController::class, 'index'])->name('customers');
+Route::delete('/customers/{id}', [CustomersController::class, 'delete'])->name('customers.delete');
+Route::post('/customers/toggle-block', [CustomersController::class, 'toggleBlock'])->name('customers.toggle-block');
 
 Route::get('/employees', [EmployeesController::class, 'index'])->name('employees');
 Route::get('/employees/create', [EmployeesController::class, 'create'])->name('employees.register');
@@ -38,6 +38,7 @@ Route::get('/purchases', [PurchasesController::class, 'index'])->name('purchases
 Route::get('/screening/{id}', [ScreeningController::class, 'screening'])->name('screening');
 
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::get('/cart', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/cart/checkout', [CartController::class, 'pay'])->name('cart.checkout.submit');
 Route::patch('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 Route::delete('/cart/remove/{seat_id}', [CartController::class, 'remove'])->name('cart.remove');

@@ -4,6 +4,14 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16">
         <h1 class="text-3xl font-bold">Welcome to CineMagic</h1>
         <p class="mt-4">The best place to find your favorite movies.</p>
+
+        @isset($sucesso)
+            <x-toast type="success" :message="$sucesso" />
+        @endisset
+
+        @isset($erro)
+            <x-toast type="error" :message="$erro" />
+        @endisset
     </div>
 
     <div class="flex flex-wrap justify-center mx-auto px-4 sm:px-6 lg:px-8">

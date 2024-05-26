@@ -24,13 +24,13 @@
 
                     @if ($isAtual == false)
                         <div class="flex-col justify-center items-center mt-8">
-                            <form action="{{ route('costumers.toggle-block', ['id' => $employee->id]) }}" method="post">
+                            <form action="{{ route('customers.toggle-block', ['id' => $employee->id]) }}" method="post">
                                 @csrf
                                 <button class="mb-4 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                                     {{ $employee->blocked ? 'Unblock' : 'Block' }}
                                 </button>
                             </form>
-                            <form action="{{ route('costumers.delete', ['id' => $employee->id]) }}" method="post">
+                            <form action="{{ route('customers.delete', ['id' => $employee->id]) }}" method="post">
                                 @method('DELETE')
                                 @csrf
                                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

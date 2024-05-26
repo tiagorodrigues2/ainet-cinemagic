@@ -48,7 +48,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function costumer()
+    public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'id');
     }
@@ -63,7 +63,7 @@ class User extends Authenticatable
         return $this->type === 'E';
     }
 
-    public function isCostumer(): bool
+    public function isCustomer(): bool
     {
         return $this->type === 'C';
     }

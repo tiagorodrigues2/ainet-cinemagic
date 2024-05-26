@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
 
-class CostumersController extends Controller
+class CustomersController extends Controller
 {
     public function index(): View
     {
@@ -23,13 +23,13 @@ class CostumersController extends Controller
 
         $search = $_GET['search'] ?? null;
 
-        $costumers = User::where('type', 'C')
+        $customers = User::where('type', 'C')
                 ->when($search, function ($query) use ($search) {
                     $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
                 })
                 ->get();
 
-        return view('costumers.costumer-list')->with('costumers', $costumers)->with('search', $search)->with('sucesso', $sucesso)->with('erro', $erro);
+        return view('customers.customer-list')->with('customers', $customers)->with('search', $search)->with('sucesso', $sucesso)->with('erro', $erro);
     }
 
     public function delete(int $id): RedirectResponse {
@@ -42,17 +42,17 @@ class CostumersController extends Controller
             abort(400);
         }
 
-        $costumer = User::find($id);
+        $customer = User::find($id);
 
-        if (!$costumer) {
-            return redirect()->route('costumers')->with('error', 'Costumer not found!');
+        if (!$customer) {
+            return redirect()->route('customers')->with('error', 'Customer not found!');
         }
 
-        $costumer->delete();
+        $customer->delete();
 
-        Session::flash('success', 'Costumer ' . $costumer->name . ' deleted successfully!');
+        Session::flash('success', 'Customer ' . $customer->name . ' deleted successfully!');
 
-        return redirect()->back()->with('success', 'Costumer' . $costumer->name . ' deleted successfully!');
+        return redirect()->back()->with('success', 'Customer' . $customer->name . ' deleted successfully!');
 
     }
 
@@ -65,24 +65,24 @@ class CostumersController extends Controller
         $id = $request->all()['id'];
 
         if (!isset($id) || !is_numeric($id) || $id <= 0) {
-            return redirect()->route('costumers')->with('error', 'Costumer not found!');
+            return redirect()->route('customers')->with('error', 'Customer not found!');
         }
 
         if (Auth::user()->id == $id) {
             abort(400);
         }
 
-        $costumer = User::find($id);
+        $customer = User::find($id);
 
-        if (!$costumer) {
-            return redirect()->route('costumers')->with('error', 'Costumer not found!');
+        if (!$customer) {
+            return redirect()->route('customers')->with('error', 'Customer not found!');
         }
 
-        $costumer->blocked = !$costumer->blocked;
-        $costumer->save();
+        $customer->blocked = !$customer->blocked;
+        $customer->save();
 
-        Session::flash('success', 'Costumer ' . $costumer->name . ($costumer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
+        Session::flash('success', 'Customer ' . $customer->name . ($customer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
 
-        return redirect()->back()->with('success', 'Costumer ' . $costumer->name . ($costumer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
+        return redirect()->back()->with('success', 'Customer ' . $customer->name . ($customer->blocked ? ' blocked' : ' unblocked') . ' successfully!');
     }
 }

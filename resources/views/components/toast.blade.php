@@ -8,7 +8,7 @@
     };
 @endphp
 
-<div class="my-4">
+<div class="my-4 z-0">
     <div class="{{ $colors }} px-4 py-3 rounded relative" role="alert">
         <strong class="font-bold">{{ $title }}:</strong>
         <span>{{ $message }}</span>
