@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -42,15 +43,20 @@ class CustomersController extends Controller
             abort(400);
         }
 
-        $customer = User::find($id);
+        $user = User::find($id);
 
-        if (!$customer) {
+        if (!$user) {
             return redirect()->route('customers')->with('error', 'Customer not found!');
         }
 
-        $customer->delete();
+        $customer = Customer::find($user->id);
+        if ($customer) {
+            $customer->delete();
+        }
 
-        Session::flash('success', 'Customer ' . $customer->name . ' deleted successfully!');
+        $user->delete();
+
+        Session::flash('success', 'Customer ' . $user->name . ' deleted successfully!');
 
         return redirect()->back()->with('success', 'Customer' . $customer->name . ' deleted successfully!');
 
