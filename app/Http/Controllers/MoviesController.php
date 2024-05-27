@@ -33,8 +33,8 @@ class MoviesController extends Controller {
         }
 
         $nextScreenings = $movie->screenings()->where('date', '<=', DB::raw('CURDATE() + INTERVAL 14 DAY'))->where('date', '>=', DB::raw('CURDATE()'))->orderBy('date', 'asc')->get();
-        $ticketPrice = $config->ticket_price;
 
+        $ticketPrice = $config->ticket_price;
         if (Auth::check()) {
            $ticketPrice -= $config->registered_customer_ticket_discount;
         }

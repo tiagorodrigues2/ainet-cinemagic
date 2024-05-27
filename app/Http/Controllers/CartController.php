@@ -44,14 +44,6 @@ class CartController extends \Illuminate\Routing\Controller
             abort(404);
         }
 
-        // //Verificar se a screening não comecou já
-        // $screeningDateTime = $screening->date . ' ' . $screening->time;
-        // $now = date('Y-m-d H:i:s', time() + (5 * 60));
-        // if ($screeningDateTime < $now) {
-        //     Session::flash('error', 'Screening has already started');
-        //     return redirect()->route('movie', ['id' => $movie->id]);
-        // }
-
         $existingTicket = $screening->tickets()->where('seat_id', $seat->id)->first();
 
         if ($existingTicket) {
@@ -92,7 +84,7 @@ class CartController extends \Illuminate\Routing\Controller
         Session::put('cart', $cart);
         Session::flash('success', 'Ticket added to cart');
 
-        return redirect()->route('movie', ['id' => $movie->id]);
+        return redirect()->route('screening', ['id' => $screening->id]);
     }
 
     public function checkout(): View {

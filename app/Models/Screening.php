@@ -38,4 +38,11 @@ class Screening extends Model
 
         return $result->all();
     }
+
+    public function isFull() {
+        $seats = $this->theater()->first()->seats()->get();
+        $tickets = $this->tickets()->get();
+        $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray());
+        return $seats->count() == 0;
+    }
 }

@@ -102,7 +102,7 @@
         @if(count($cart) > 0)
             <form action="{{ route('cart.checkout.submit') }}" method="post">
                 @csrf
-                <div class="flex justify-between items-end">
+                <div class="flex justify-between items-end mb-12">
                     <div>
 
                         @if (!auth()->check())
