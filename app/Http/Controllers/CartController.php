@@ -100,6 +100,11 @@ class CartController extends \Illuminate\Routing\Controller
             $total += $item['ticket_price'];
         }
 
+        if (Auth::check() && Auth::user()->isCustomer()) {
+            $customer = Customer::find(Auth::user()->id);
+            return view('cart.checkout')->with('cart', $cart)->with('total', $total)->with('customer', $customer);
+        }
+
         return view('cart.checkout')->with('cart', $cart)->with('total', $total);
     }
 
@@ -142,24 +147,27 @@ class CartController extends \Illuminate\Routing\Controller
         }
 
         $request->validate([
-            'tipo_pagamento' => 'required|string',
-            'nif' => 'required|integer'
+            'tipo_pagamento' => 'required|string|in:paypal,cartao,mbway',
+            'nif' => 'required|max:9'
         ], [
             'tipo_pagamento.required' => 'Payment method is required',
             'tipo_pagamento.string' => 'Payment method must be a string',
+            'tipo_pagamento.in' => 'Payment method must be one of: Cartão de Crédito, Paypal, MBWay',
             'nif.required' => 'NIF is required',
-            'nif.integer' => 'NIF must be an integer'
+            'nif.max' => 'NIF must have a maximum of 9 characters'
         ]);
 
         if (!Auth::check()) {
             $request->validate([
-                'customer_name' => 'required|string',
-                'customer_email' => 'required|email',
+                'customer_name' => 'required|string|max:255',
+                'customer_email' => 'required|email|max:255',
             ], [
                 'customer_name.required' => 'Name is required',
                 'customer_name.string' => 'Name must be a string',
+                'customer_name.max' => 'Name must have a maximum of 255 characters',
                 'customer_email.required' => 'Email is required',
-                'customer_email.email' => 'Email must be a valid email'
+                'customer_email.email' => 'Email must be a valid email',
+                'customer_email.max' => 'Email must have a maximum of 255 characters'
             ]);
         }
 
@@ -168,6 +176,11 @@ class CartController extends \Illuminate\Routing\Controller
         $ticketPrice = $config->ticket_price;
         if (Auth::check()) {
             $ticketPrice -= $config->registered_customer_ticket_discount;
+
+            if (!Auth::user()->isCustomer()) {
+                Session::flash('error', 'Only customers can buy tickets');
+                return redirect()->route('cart.checkout');
+            }
         }
 
         $total = $ticketPrice * count($cart);
@@ -189,8 +202,8 @@ class CartController extends \Illuminate\Routing\Controller
                 $request->validate([
                     'paypal_email' => 'required|email'
                 ], [
-                    'paypal_email.required' => 'Email is required',
-                    'paypal_email.email' => 'Email must be a valid email'
+                    'paypal_email.required' => 'Paypal Email is required',
+                    'paypal_email.email' => 'Paypal Email must be a valid email'
                 ]);
                 $sucesso = Payment::payWithPaypal($request->paypal_email);
                 break;
@@ -198,8 +211,8 @@ class CartController extends \Illuminate\Routing\Controller
                 $request->validate([
                     'mbway_phone' => 'required|integer'
                 ], [
-                    'mbway_phone.required' => 'Phone number is required',
-                    'mbway_phone.integer' => 'Phone number must be an integer'
+                    'mbway_phone.required' => 'MBWay number is required',
+                    'mbway_phone.integer' => 'MBWay number must be an integer'
                 ]);
                 $sucesso = Payment::payWithMBway($request->mbway_phone);
                 break;
@@ -248,6 +261,7 @@ class CartController extends \Illuminate\Routing\Controller
 
             DB::commit();
             Session::flash('success', 'Checkout successful');
+            Session::flash('sucesso', 'Compra efetuada com sucesso');
             Session::forget('cart');
             return $user ? redirect()->route('purchases') : redirect()->route('home');
         } catch (\Exception $e) {
@@ -282,5 +296,19 @@ class CartController extends \Illuminate\Routing\Controller
             default:
                 return null;
         }
+    }
+
+    public static function atualizaPrecosCarrinho(float $newPrice) {
+        $cart = Session::get('cart');
+
+        if (!$cart) {
+            return;
+        }
+
+        for ($i = 0; $i < count($cart); $i++) {
+            $cart[$i]['ticket_price'] = $newPrice;
+        }
+
+        Session::put('cart', $cart);
     }
 }

@@ -107,34 +107,34 @@
 
                         @if (!auth()->check())
                             <div>
-                                <input type="text" id="customer_name" name="customer_name" class="border border-gray-300 rounded px-3 py-2 mb-8" style="width: 400px" placeholder="Costumer Name">
-                                <input type="text" id="customer_email" name="customer_email" class="border border-gray-300 rounded px-3 py-2 mb-8" style="width: 400px" placeholder="Costumer Email">
+                                <input type="text" id="customer_name" name="customer_name" class="border border-gray-300 rounded px-3 py-2 mb-8" style="width: 400px" placeholder="Costumer Name" value="{{ old('customer_name') }}">
+                                <input type="text" id="customer_email" name="customer_email" class="border border-gray-300 rounded px-3 py-2 mb-8" style="width: 400px" placeholder="Costumer Email" value="{{ old('customer_email') }}">
                             </div>
 
                         @endif
 
                         <label for="tipo_pagamento" class="block text-sm font-medium text-gray-700">Payment Method</label>
                         <select id="tipo_pagamento" name="tipo_pagamento" class="border border-gray-300 rounded px-3 py-2" style="cursor: pointer">
-                            <option value="paypal">Paypal</option>
-                            <option value="cartao">Cartão de Crédito</option>
-                            <option value="mbway">MBWay</option>
+                            <option value="paypal" @selected( old('tipo_pagamento', isset($customer) ? $customer->payment_type : null ) == 'paypal')>Paypal</option>
+                            <option value="cartao" @selected( old('tipo_pagamento', isset($customer) ? $customer->payment_type : null ) == 'cartao')>Cartão de Crédito</option>
+                            <option value="mbway" @selected( old('tipo_pagamento', isset($customer) ? $customer->payment_type : null ) == 'mbway')>MBWay</option>
                         </select>
 
                         <div id="form_paypal" class="mt-8">
-                            <input type="text" name="paypal_email" id="paypal_email" class="border border-gray-300 rounded px-3 py-2" style="width: 400px" placeholder="Paypal Email">
+                            <input type="text" name="paypal_email" id="paypal_email" class="border border-gray-300 rounded px-3 py-2" style="width: 400px" placeholder="Paypal Email" value={{ old('paypal_email', isset($customer) ? $customer->payment_ref : null) }}>
                         </div>
 
                         <div id="form_visa" class="mt-8">
-                            <input type="number" name="visa_number" id="visa_number" class="border border-gray-300 rounded px-3 py-2" style="width: 350px" placeholder="Card Number">
+                            <input type="number" name="visa_number" id="visa_number" class="border border-gray-300 rounded px-3 py-2" style="width: 350px" placeholder="Card Number" value={{ old('visa_number', isset($customer) ? $customer->payment_ref : null) }}>
                             <input type="number" name="visa_cvv" id="visa_cvv" class="border border-gray-300 rounded px-3 py-2" placeholder="Security Code (CVV)">
                         </div>
 
                         <div id="form_mbway" class="mt-8">
-                            <input type="number" name="mbway_phone" id="mbway_phone" class="border border-gray-300 rounded px-3 py-2" style="width: 250px" placeholder="Phone Number">
+                            <input type="number" name="mbway_phone" id="mbway_phone" class="border border-gray-300 rounded px-3 py-2" style="width: 250px" placeholder="Phone Number" value={{ old('mbway_phone', isset($customer) ? $customer->payment_ref : null) }}>
                         </div>
 
                         <div class="mt-8">
-                            <input type="number" name="nif" id="nif" class="border border-gray-300 rounded px-3 py-2" style="width: 250px" placeholder="NIF">
+                            <input name="nif" id="nif" class="border border-gray-300 rounded px-3 py-2" style="width: 250px" placeholder="NIF" value={{ old('nif', isset($customer) ? $customer->nif : null) }}>
                         </div>
 
                     </div>

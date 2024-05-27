@@ -22,6 +22,7 @@ Route::post('/logout', [LoginController::class,'logout'])->name('logout');
 Route::get('/profile', [LoginController::class, 'profile'])->name('profile');
 Route::patch('/profile/photo', [LoginController::class, 'savePhoto'])->name('profile.photo.update');
 Route::put('/profile/password', [LoginController::class, 'savePassword'])->name('profile.password.update');
+Route::put('/profile', [LoginController::class, 'saveProfile'])->name('profile.update');
 
 Route::get('/customers', [CustomersController::class, 'index'])->name('customers');
 Route::delete('/customers/{id}', [CustomersController::class, 'delete'])->name('customers.delete');

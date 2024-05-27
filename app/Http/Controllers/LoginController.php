@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
+use App\Models\Configuration;
 
 class LoginController extends Controller
 {
@@ -38,6 +40,10 @@ class LoginController extends Controller
                 ]);
             }
 
+            $config = Configuration::find(1);
+            $ticketPrice = $config->ticket_price - $config->registered_customer_ticket_discount;
+            CartController::atualizaPrecosCarrinho($ticketPrice);
+
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
@@ -60,14 +66,19 @@ class LoginController extends Controller
     public function registerUser(Request $request) {
 
         $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+            'name' => 'required|max:255|string',
+            'email' => 'required|max:255|string',
+            'password' => 'required|string',
             'password_confirmation' => 'required|same:password',
         ], [
             'name.required' => 'The Name field is required.',
+            'name.max' => 'The Name field must have a maximum of 255 characters.',
+            'name.string' => 'The Name field must be a string.',
             'email.required' => 'The Email field is required.',
+            'email.max' => 'The Email field must have a maximum of 255 characters.',
+            'email.string' => 'The Email field must be a string.',
             'password.required' => 'The password field is required.',
+            'password.string' => 'The password field must be a string.',
             'password_confirmation.required' => 'The password confirmation field is required.',
             'password_confirmation.same' => 'The password confirmation does not match the password.',
         ]);
@@ -78,6 +89,9 @@ class LoginController extends Controller
                 'register' => 'Email already registered.',
             ])->withInput();
         }
+
+        $config = Configuration::find(1);
+        $ticketPrice = $config->ticket_price - $config->registered_customer_ticket_discount;
 
         try {
             $user = User::create([
@@ -92,6 +106,8 @@ class LoginController extends Controller
             ]);
 
             Auth::login($user, true);
+
+            CartController::atualizaPrecosCarrinho($ticketPrice);
 
             return redirect('/');
         } catch (\Exception $e) {
@@ -109,9 +125,66 @@ class LoginController extends Controller
         $user = Auth::user();
 
         $success = Session::get('success');
-        $error = Session::get('error');
+        $erro = Session::get('erro');
 
-        return view('auth.profile')->with('user', $user)->with('success', $success)->with('error', $error);
+        if (Auth::user()->isCustomer()) {
+            $customer = Customer::find($user->id);
+            return view('auth.profile')->with('user', $user)->with('customer', $customer)->with('success', $success)->with('error', $erro);
+        }
+
+        return view('auth.profile')->with('user', $user)->with('success', $success)->with('erro', $erro);
+    }
+
+    public function saveProfile(Request $request): RedirectResponse {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = Auth::user();
+
+        if (!$user->isCustomer()) {
+            abort(403);
+        }
+
+        $customer = Customer::find($user->id);
+
+        if (!$customer) {
+            abort(404);
+        }
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+            'nif' => 'max:9',
+            'payment_type' => 'in:MBWAY,PAYPAL,VISA',
+            'payment_ref' => 'max:255',
+        ], [
+            'name.required' => 'The Name field is required.',
+            'email.required' => 'The Email field is required.',
+            'nif.max' => 'The NIF field must have a maximum of 9 characters.',
+            'payment_type.in' => 'The payment type must be one of: MBWAY, PAYPAL, VISA',
+            'payment_ref.max' => 'The payment reference field must have a maximum of 255 characters.',
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            $customer->payment_type = $request->payment_type;
+            $customer->payment_ref = $request->payment_ref;
+            $customer->nif = $request->nif;
+            $customer->save();
+
+            Session::flash('success', 'Profile saved successfully!');
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            Session::flash('erro', 'An error occurred while saving the profile. Please try again.');
+        }
+        return redirect()->route('profile');
     }
 
     public function savePhoto(Request $request): RedirectResponse {
