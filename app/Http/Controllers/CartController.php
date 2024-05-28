@@ -263,6 +263,13 @@ class CartController extends \Illuminate\Routing\Controller
             Session::flash('success', 'Checkout successful');
             Session::flash('sucesso', 'Compra efetuada com sucesso');
             Session::forget('cart');
+
+            $tickets = Ticket::where('purchase_id', $purchase->id)->get();
+
+            if (!$user) {
+                Session::put('printTickets', $tickets);
+            }
+
             return $user ? redirect()->route('purchases') : redirect()->route('home');
         } catch (\Exception $e) {
             dd($e);

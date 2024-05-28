@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\ScreeningController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeesController;
@@ -43,3 +44,7 @@ Route::get('/cart', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/cart/checkout', [CartController::class, 'pay'])->name('cart.checkout.submit');
 Route::patch('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 Route::delete('/cart/remove/{seat_id}', [CartController::class, 'remove'])->name('cart.remove');
+
+Route::get('/ticket/{id}', [TicketController::class, 'ticket'])->name('ticket');
+Route::get('/tickets/scan', [TicketController::class, 'scan'])->name('tickets.scan');
+Route::post('/tickets/scan', [TicketController::class, 'scanTicket'])->name('tickets.scan.submit');

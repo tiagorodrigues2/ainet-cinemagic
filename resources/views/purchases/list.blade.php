@@ -8,6 +8,7 @@
         @if (count($purchases) <= 0)
             <x-toast type="info" :message="__('No purchases found.')" />
         @else
+        <span class="mb-6">Note: Click on Ticket ID print the ticket</span>
         <table class="min-w-full bg-white border border-gray-300">
             <thead>
                 <tr>
@@ -36,10 +37,10 @@
                         <tr class="odd:bg-gray-100">
                             <td colspan="2">
                                 <div class="px-16 p-1 flex justify-between">
-                                    <span>Ticket <span class="font-semibold">#{{ $t->id }}</span></span>
+                                    <a href={{ route('ticket', ['id' => $t->id]) }} target="__blank" class="hover:text-blue-700">Ticket <span class="font-semibold">#{{ $t->id }}</span></a>
                                     <span class="font-semibold">{{ $movie->title }}</span>
                                     <span>Theater: <span class="font-semibold">{{ $theater }}</span></span>
-                                    <span>Seat: <span class="font-semibold">{{ $seat->row }}-{{ $seat->seat_number }}</span></span>
+                                    <span>Seat: <span class="font-semibold">{{ $seat->row }}{{ $seat->seat_number }}</span></span>
                                     <span class="font-semibold">{{ $s->date }} {{ $s->start_time }}</span>
                                     <span>Price: <span class="font-semibold text-green-800">{{ $t->price }} €</span></span>
                                 </div>
