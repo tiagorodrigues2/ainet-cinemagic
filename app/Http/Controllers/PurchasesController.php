@@ -23,8 +23,8 @@ class PurchasesController extends Controller {
 
         $user = Auth::user();
 
-        if ($user->customer()) {
-            $purchases = Purchase::where('customer_id', $user->customer()->first()->id)->orderByDesc('date')->get();
+        if ($user) {
+            $purchases = Purchase::where('customer_id', $user->id)->orderByDesc('date')->get();
         } else {
             $purchases = [];
         }
