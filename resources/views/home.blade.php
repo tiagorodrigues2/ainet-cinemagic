@@ -28,7 +28,7 @@
         @endisset
     </div>
 
-    <div class="flex flex-wrap justify-center mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap justify-center items-stretch mx-auto px-4 sm:px-6 lg:px-8">
         @foreach ($movies as $movie)
             <x-PosterCard :movie="$movie" />
         @endforeach
