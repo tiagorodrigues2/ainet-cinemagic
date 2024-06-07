@@ -75,42 +75,42 @@
                     <h3 class="text-light bg-dark text-center">Ecrã</h3>
                 </div>
                 <form action="{{route('cart.checkout')}}" id="sessao" method="POST">
-                @csrf
-                <div class="container">
-                    <table class="table table-striped table-responsive-md btn-table">
-                        <tbody>
-                        @foreach($seats as $seat)
-                            <tr>
-                                <th class="bg-light">{{$seat[0]->row}}</th>
-                                @foreach($seat as $pos)
-                                    @if($pos->ocupado == 'ocupado')
-                                    <th class="bg-light">{{$pos->seat_number}}</th>
-                                    <td class="text-center"><input type="button"
-                                                                   class="btn btn-outline-primary btn-sm m-0 waves-effect"
-                                                                   style="background-color: greenyellow"
-                                                                   value="{{$pos->seat_number}}">
-                                    </td>
-                                    @else
-                                        <td class="text-center">
-                                            <input type="button"
-                                                   class="btn btn-outline-primary btn-sm m-0 waves-effect"
-                                                   value="{{$pos->seat_number}}"
-                                                   onclick="submitForm('{{$seat[0]->row}}', '{{$pos->seat_number}}')">
-                                        </td>
-                                    @endif
-                                @endforeach
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    @csrf
+                    <div class="container">
+                        <table class="table table-striped table-responsive-md btn-table">
+                            <tbody>
+                            @foreach($seats as $seat)
+                                <tr>
+                                    <th class="bg-light">{{$seat[0]->row}}</th>
+                                    @foreach($seat as $pos)
+                                        @if($pos->ocupado == 'ocupado')
+                                            <th class="bg-light">{{$pos->seat_number}}</th>
+                                            <td class="text-center"><input type="button"
+                                                                           class="btn btn-outline-primary btn-sm m-0 waves-effect"
+                                                                           style="background-color: greenyellow"
+                                                                           value="{{$pos->seat_number}}">
+                                            </td>
+                                        @else
+                                            <td class="text-center">
+                                                <input type="button"
+                                                       class="btn btn-outline-primary btn-sm m-0 waves-effect"
+                                                       value="{{$pos->seat_number}}"
+                                                       onclick="submitForm('{{$seat[0]->row}}', '{{$pos->seat_number}}')">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                <div class="flex justify-end mt-8">
-                    <button type="submit" class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        Add to Cart
-                    </button>
-                </div>
-            </form>
+                    <div class="flex justify-end mt-8">
+                        <button type="submit" class="bg-gray-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            Add to Cart
+                        </button>
+                    </div>
+                </form>
         @endif
     </div>
     </form>
