@@ -35,6 +35,20 @@ class ScreeningController extends \Illuminate\Routing\Controller
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
 
+        //Encontrar os lugares ocupados na sala(pelos bilhetes já comprados para a sessao)
+        foreach ($seats as $seat) {
+            //dd($seat->id);
+            //Devolve o bilhete para o lugar associado se existir, se nao coloca a null
+            $ocupado = $tickets->firstWhere('seat_id', $seat->id);
+
+            if ($ocupado != NULL) {
+                $seat->ocupado = 'ocupado';
+            } else {
+                $seat->ocupado = 'livre';
+            }
+        }
+
+        $seats = $theater->seats->GroupBy('row');
         $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray());
 
         return view('screening.buy')
