@@ -37,7 +37,7 @@ class ScreeningController extends \Illuminate\Routing\Controller
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
 
-        $cart = Session::get('cart');
+        $cart = Session::get('cart', []);
 
         $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray())->whereNotIn('id', array_column($cart, 'seat_id'));
 
