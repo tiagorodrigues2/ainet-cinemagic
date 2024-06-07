@@ -36,6 +36,8 @@ class ScreeningController extends \Illuminate\Routing\Controller
         if (isset($movie->trailer_url) && !empty($movie->trailer_url)) {
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
+
+
         //Encontrar os lugares ocupados na sala(pelos bilhetes já comprados para a sessao)
         /*foreach ($seats as $seat) {
             //dd($seat->id);
@@ -52,6 +54,8 @@ class ScreeningController extends \Illuminate\Routing\Controller
         $seats = $theater->seats->GroupBy('row');
         $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray());
         */
+
+
         $cart = Session::get('cart', []);
 
         $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray())->whereNotIn('id', array_column($cart, 'seat_id'));

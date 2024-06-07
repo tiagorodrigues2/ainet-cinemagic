@@ -11,6 +11,10 @@ class Theater extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = ['name', 'photo_filename'];
+
+    public $timestamps = false;
+
     public function screenings()
     {
         return $this->hasMany(Screening::class, 'theater_id', 'id');

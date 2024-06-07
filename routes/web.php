@@ -11,6 +11,7 @@ use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PricesController;
+use App\Http\Controllers\TheaterController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
 Route::get('/movie/{id}', [MoviesController::class, 'movie'])->name('movie');
@@ -52,3 +53,7 @@ Route::post('/tickets/scan', [TicketController::class, 'scanTicket'])->name('tic
 
 Route::get('/prices', [PricesController::class, 'index'])->name('prices');
 Route::post('/prices', [PricesController::class, 'save'])->name('prices.save');
+
+Route::get('/theaters', [TheaterController::class, 'index'])->name('theaters');
+Route::get('/theaters/{id}', [TheaterController::class, 'show'])->name('theaters.show');
+Route::post('/theaters/{id}', [TheaterController::class, 'save'])->name('theaters.save');
