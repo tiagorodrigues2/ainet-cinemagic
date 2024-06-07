@@ -2,6 +2,7 @@
 @php
     $screening = $ticket->screening()->first();
     $seat = $ticket->seat()->first();
+    $purchase = $ticket->purchase()->first();
 @endphp
 
 <div>
@@ -10,12 +11,28 @@
         CineMagic Ticket
     </span>
     <hr>
+
     <div>
-        Status:
+        Customer:
     </div>
     <div style="margin-bottom: 8px; font-weight: 700">
-        {{ $ticket->status }}
+        {{ $purchase->customer_name }}
     </div>
+    <div>
+        Email:
+    </div>
+    <div style="margin-bottom: 8px; font-weight: 700">
+        {{ $purchase->customer_email }}
+    </div>
+
+    <div>
+        NIF:
+    </div>
+    <div style="margin-bottom: 8px; font-weight: 700">
+        {{ $purchase->nif }}
+    </div>
+
+    <hr>
     <div>
         Movie:
     </div>

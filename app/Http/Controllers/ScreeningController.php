@@ -10,6 +10,8 @@ use App\Models\Theater;
 use App\Models\Seat;
 use App\Models\Configuration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ScreeningController extends \Illuminate\Routing\Controller
 {
@@ -34,9 +36,8 @@ class ScreeningController extends \Illuminate\Routing\Controller
         if (isset($movie->trailer_url) && !empty($movie->trailer_url)) {
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
-
         //Encontrar os lugares ocupados na sala(pelos bilhetes já comprados para a sessao)
-        foreach ($seats as $seat) {
+        /*foreach ($seats as $seat) {
             //dd($seat->id);
             //Devolve o bilhete para o lugar associado se existir, se nao coloca a null
             $ocupado = $tickets->firstWhere('seat_id', $seat->id);
@@ -50,6 +51,10 @@ class ScreeningController extends \Illuminate\Routing\Controller
 
         $seats = $theater->seats->GroupBy('row');
         $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray());
+        */
+        $cart = Session::get('cart', []);
+
+        $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray())->whereNotIn('id', array_column($cart, 'seat_id'));
 
         return view('screening.buy')
             ->with('screening', $screening)

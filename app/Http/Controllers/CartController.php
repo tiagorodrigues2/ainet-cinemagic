@@ -148,14 +148,22 @@ class CartController extends \Illuminate\Routing\Controller
 
         $request->validate([
             'tipo_pagamento' => 'required|string|in:paypal,cartao,mbway',
-            'nif' => 'required|max:9'
         ], [
             'tipo_pagamento.required' => 'Payment method is required',
             'tipo_pagamento.string' => 'Payment method must be a string',
             'tipo_pagamento.in' => 'Payment method must be one of: Cartão de Crédito, Paypal, MBWay',
-            'nif.required' => 'NIF is required',
-            'nif.max' => 'NIF must have a maximum of 9 characters'
         ]);
+
+        if ($request->nif) {
+            $request->validate([
+                'nif' => 'required|integer|max:9|min:9'
+            ], [
+                'nif.required' => 'NIF is required',
+                'nif.integer' => 'NIF must be an integer',
+                'nif.max' => 'NIF must have a maximum of 9 characters',
+                'nif.min' => 'NIF must have a minimum of 9 characters'
+            ]);
+        }
 
         if (!Auth::check()) {
             $request->validate([
