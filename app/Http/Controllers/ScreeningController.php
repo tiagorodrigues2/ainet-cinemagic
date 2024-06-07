@@ -10,6 +10,8 @@ use App\Models\Theater;
 use App\Models\Seat;
 use App\Models\Configuration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ScreeningController extends \Illuminate\Routing\Controller
 {
@@ -35,7 +37,9 @@ class ScreeningController extends \Illuminate\Routing\Controller
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
 
-        $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray());
+        $cart = Session::get('cart');
+
+        $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray())->whereNotIn('id', array_column($cart, 'seat_id'));
 
         return view('screening.buy')
             ->with('screening', $screening)

@@ -50,6 +50,7 @@
                                         <a href="{{ route('profile') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Account Settings</a>
                                         <a href="{{ route('purchases') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">My Purchases</a>
                                         @if (auth()->user()->isAdmin())
+                                            <a href="{{ route('prices') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Manage Prices <span class="text-red-800 text-sm ml-auto">A</span></a>
                                             <a href="{{ route('employees') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Manage Employees <span class="text-red-800 text-sm ml-auto">A</span></a>
                                             <a href="{{ route('customers') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Manage Customers <span class="text-red-800 text-sm ml-auto">A</span></a>
                                             <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Manage Theaters <span class="text-red-800 text-sm ml-auto">A</span></a>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PricesController;
 
 Route::get('/', [Controller::class, 'index'])->name('home');
 Route::get('/movie/{id}', [MoviesController::class, 'movie'])->name('movie');
@@ -48,3 +49,6 @@ Route::delete('/cart/remove/{seat_id}', [CartController::class, 'remove'])->name
 Route::get('/ticket/{id}', [TicketController::class, 'ticket'])->name('ticket');
 Route::get('/tickets/scan', [TicketController::class, 'scan'])->name('tickets.scan');
 Route::post('/tickets/scan', [TicketController::class, 'scanTicket'])->name('tickets.scan.submit');
+
+Route::get('/prices', [PricesController::class, 'index'])->name('prices');
+Route::post('/prices', [PricesController::class, 'save'])->name('prices.save');
