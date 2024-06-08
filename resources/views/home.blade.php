@@ -33,6 +33,5 @@
             <x-PosterCard :movie="$movie" />
         @endforeach
     </div>
-    </div>
 
 @endsection

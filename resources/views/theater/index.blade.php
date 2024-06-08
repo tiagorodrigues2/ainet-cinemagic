@@ -19,6 +19,9 @@
             <x-toast type="error" :message="session('error')" />
         @endif
 
+        <div class="w-full flex justify-end mb-8">
+            <a href="{{ route('theaters.new') }}" class="px-4 py-2 bg-blue-500 text-white rounded-md">Create Theater</a>
+        </div>
 
         <table class="min-w-full bg-white">
             <thead>
@@ -39,7 +42,7 @@
                         <td class="p-4">
                             <a href="#">{{ $t->name }}</a>
                         </td>
-                        <td class="text-end">
+                        <td class="text-end px-4">
                             <a href="{{ route('theaters.show', $t->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md">View</a>
                         </td>
                     </tr>

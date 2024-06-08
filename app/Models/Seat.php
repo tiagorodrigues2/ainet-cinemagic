@@ -11,6 +11,13 @@ class Seat extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'theater_id',
+        'row',
+        'seat_number',
+    ];
+    public $timestamps = false;
+
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'seat_id', 'id');

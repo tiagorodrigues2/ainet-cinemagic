@@ -57,3 +57,11 @@ Route::post('/prices', [PricesController::class, 'save'])->name('prices.save');
 Route::get('/theaters', [TheaterController::class, 'index'])->name('theaters');
 Route::get('/theaters/{id}', [TheaterController::class, 'show'])->name('theaters.show');
 Route::post('/theaters/{id}', [TheaterController::class, 'save'])->name('theaters.save');
+Route::delete('/theaters/{id}', [TheaterController::class, 'delete'])->name('theaters.delete');
+
+Route::get('/theater/new', [TheaterController::class, 'new'])->name('theaters.new');
+Route::post('/theater/new', [TheaterController::class, 'create'])->name('theaters.create');
+Route::post('/theater/row', [TheaterController::class, 'addRow'])->name('theaters.row.add');
+Route::post('/theater/col', [TheaterController::class, 'addCol'])->name('theaters.col.add');
+Route::delete('/theater/row/{id}/{row}', [TheaterController::class, 'deleteRow'])->name('theaters.row.delete');
+Route::delete('/theater/col/{id}/{col}', [TheaterController::class, 'deleteCol'])->name('theaters.col.delete');
