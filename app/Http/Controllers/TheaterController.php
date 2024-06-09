@@ -195,6 +195,11 @@ class TheaterController extends \Illuminate\Routing\Controller
         }
 
         for ($c = 1; $c <= $seats->max('seat_number'); $c++) {
+
+            if ($seats->where('seat_number', '=', $c)->count() == 0) {
+                continue;
+            }
+
             $seat = new Seat();
             $seat->theater_id = $theater->id;
             $seat->row = $nextRow;

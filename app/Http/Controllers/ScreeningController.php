@@ -37,33 +37,31 @@ class ScreeningController extends \Illuminate\Routing\Controller
             $movie->trailer_url = str_replace('https://www.youtube.com/watch?v=', '', $movie->trailer_url);
         }
 
-
-        //Encontrar os lugares ocupados na sala(pelos bilhetes já comprados para a sessao)
-        /*foreach ($seats as $seat) {
-            //dd($seat->id);
-            //Devolve o bilhete para o lugar associado se existir, se nao coloca a null
-            $ocupado = $tickets->firstWhere('seat_id', $seat->id);
-
-            if ($ocupado != NULL) {
-                $seat->ocupado = 'ocupado';
-            } else {
-                $seat->ocupado = 'livre';
-            }
-        }
-
-        $seats = $theater->seats->GroupBy('row');
-        $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray());
-        */
-
-
         $cart = Session::get('cart', []);
 
-        $seats = $seats->whereNotIn('id', $tickets->pluck('seat_id')->toArray())->whereNotIn('id', array_column($cart, 'seat_id'));
+        $seats = $seats->map(function ($seat) use ($tickets, $cart) {
+
+            $ticket = $tickets->firstWhere('seat_id', $seat->id);
+            $cartItem = collect($cart)->firstWhere('seat_id', $seat->id);
+
+            if ($ticket) {
+                $seat->status = 'occupied';
+            } else if ($cartItem) {
+                $seat->status = 'reserved';
+            } else {
+                $seat->status = 'free';
+            }
+
+            return $seat;
+        });
+
+        $seatRows = $seats->groupBy('row');
 
         return view('screening.buy')
             ->with('screening', $screening)
             ->with('movie', $movie)
             ->with('theater', $theater)
-            ->with('seats', $seats);
+            ->with('seats', $seats)
+            ->with('seatRows', $seatRows);
     }
 }
